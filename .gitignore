@@ -130,3 +130,5 @@ dmypy.json
 
 #Other
 *.csv
+temp.*
+database/baseball.db

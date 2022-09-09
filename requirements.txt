@@ -1,2 +1,6 @@
 pybaseball==2.2.1
 dash==2.6.1
+Flask-SQLAlchemy==2.5.1
+pylint_flask_sqlalchemy==0.2.0
+pylint_flask==0.6
+sphinx==5.1.1

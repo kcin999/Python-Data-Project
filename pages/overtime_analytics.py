@@ -5,7 +5,7 @@ from pybaseball import cache
 import plotly.express as px
 import datetime
 
-from global_variables import pitch_types
+from global_variables import PITCH_TYPES
 
 
 cache.enable()
@@ -21,7 +21,7 @@ layout = html.Div(children=[
 		end_date=datetime.date.today(),
 		updatemode='bothdates'
 	),
-	dcc.Dropdown(options=pitch_types, id='pitch-selector'),
+	dcc.Dropdown(options=PITCH_TYPES, id='pitch-selector'),
 	dcc.Graph(
 		id='pitch-count-over-time'
 	),
