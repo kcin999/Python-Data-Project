@@ -1,9 +1,11 @@
+"""Main starting point for the application
+"""
 from dash import Dash, html
 import dash
 import config
 
 
-def create_app():
+def create_app() -> Dash:
     """Creates the application object to run
 
     :return: Returns the Dash Application
@@ -25,6 +27,6 @@ def create_app():
     return app
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = create_app()
-    app.run()
+    app.run_server()

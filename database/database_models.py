@@ -4,11 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-
-class Statcast(db.Model):
+class Pitches(db.Model):
     """This is a database model class which houses all pitches and their results
     """
-    __tablename__ = "statcast"
+    __tablename__ = "pitches"
 
     id = db.Column(db.Integer, primary_key=True)
     pitch_type = db.Column(db.String(2))

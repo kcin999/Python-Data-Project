@@ -1,20 +1,29 @@
+"""Has all database functions within it
+"""
+import io
 from datetime import datetime
 import pybaseball
-import io
 import requests
 import pandas as pd
 
-from database.database_models import Statcast, db
+from database.database_models import Pitches, db
 from global_variables import PLAYER_INFO_URL
 
 
 def add_player_info():
+    """Adds Player Info to the Database
+    """
     df = get_player_info()
 
     df.to_sql(con=db.engine, name='players', if_exists='append', index=False)
 
 
-def get_player_info():
+def get_player_info() -> pd.DataFrame:
+    """Get's all player info
+
+    :return: Dataframe that contains the player information
+    :rtype: pd.DataFrame
+    """
     request_content = requests.get(PLAYER_INFO_URL).content
     columns_to_keep = [
         'key_retro',
@@ -55,12 +64,31 @@ def get_player_info():
 
 
 def add_statcast_data(start_date: datetime, end_date: datetime):
+    """Adds statcast data to our database
+
+    :param start_date: Start date of range to get data for
+    :type start_date: datetime
+
+    :param end_date: End date of range to get data for
+    :type end_date: datetime
+    """
     df = get_statcast_data(start_date, end_date)
 
-    df.to_sql(con=db.engine, name='statcast', if_exists='append', index=False)
+    df.to_sql(con=db.engine, name='pitches', if_exists='append', index=False)
 
 
-def get_statcast_data(start_date: datetime, end_date: datetime):
+def get_statcast_data(start_date: datetime, end_date: datetime) -> pd.DataFrame:
+    """Retrieves the Statcast Data between the two dates
+
+    :param start_date: Start date of range to get data for
+    :type start_date: datetime
+
+    :param end_date: End date of range to get data for
+    :type end_date: datetime
+
+    :return: Dataframe containing all information relating to statcast data
+    :rtype: pd.DataFrame
+    """
     df = pybaseball.statcast(
         start_dt=start_date.strftime("%Y-%m-%d"),
         end_dt=end_date.strftime("%Y-%m-%d"),
@@ -152,11 +180,19 @@ def get_statcast_data(start_date: datetime, end_date: datetime):
 
 
 def clear_statcast_data(start_date: datetime = None, end_date: datetime = None):
-    query = Statcast.query
+    """Clears statcast data between the two date ranges.
+        If they are not provided, it goes to the beginning / end of the data
+
+    :param start_date: Start date of range to get data for, defaults to None
+    :type start_date: datetime, optional
+    :param end_date: End date of range to get data for, defaults to None
+    :type end_date: datetime, optional
+    """
+    query = Pitches.query
     if start_date:
-        query = query.filter(Statcast.game_date >= start_date)
+        query = query.filter(Pitches.game_date >= start_date)
 
     if end_date:
-        query = query.filter(Statcast.game_date <= end_date)
+        query = query.filter(Pitches.game_date <= end_date)
 
     query.delete()

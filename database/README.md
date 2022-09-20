@@ -1,6 +1,12 @@
 # Information about the database
-Initally, the database is located at [baseball.db](/database/baseball.db). This value is set in the [config.py](/config.py) in the 'SQLALCHEMY_DATABASE_URI' variable. 
+The default database type is SQLiteInitally, the database is located at [baseball.db](/database/baseball.db). This value is set in the [config.py](/config.py) in the 'SQLALCHEMY_DATABASE_URI' variable. 
 
+If you wish to use MySQL, change the value of 'SQLALCHEMY_DATABASE_URI' in the [config.py](/config.py) file to:
+```
+mysql://[username]:[password]@[host]:[port]/[database_name]
+```
+
+* Change the items in the brackets to your value
 
 Initially, this is a sqlite database and it is tested and working. This can be set to another database type, however there may need to be additional packages installed. Further, if there is a cloud database (either local or otherwise), then this must be live and connection ready before the app starts
 
@@ -11,167 +17,87 @@ Table information are in the following sections
 ### General Info
 This is where all the pitch-by-pitch data is located. The columns are located below. Please see this site: https://baseballsavant.mlb.com/csv-docs for information on the specific columns. The names are the same, except for 'id'.
 
-### Columns
-* id
-    * Type: 'Integer'
-    * Primary Key for statcast data
-* game_date
-    * Type: 'String'
-* pitch_type
-    * Type: 'Date'
-* release_speed
-    * Type: 'Float'
-* release_pos_x
-    * Type: 'Float'
-* release_pos_y
-    * Type: 'Float'
-* release_pos_z
-    * Type: 'Float'
-* batter
-    * Type: 'String'
-* pitcher
-    * Type: 'String'
-* events
-    * Type: 'String'
-* description
-    * Type: 'String'
-* zone
-    * Type: 'Text'
-* des
-    * Type: 'String'
-* game_type
-    * Type: 'String'
-* stand
-    * Type: 'String'
-* p_throws
-    * Type: 'String'
-* home_team
-    * Type: 'String'
-* away_team
-    * Type: 'String'
-* type
-    * Type: 'String'
-* hit_location
-    * Type: 'String'
-* bb_type
-    * Type: 'String'
-* balls
-    * Type: 'Integer'
-* strikes
-    * Type: 'Integer'
-* pfx_x
-    * Type: 'Float'
-* pfx_z
-    * Type: 'Float'
-* plate_x
-    * Type: 'Float'
-* plate_z
-    * Type: 'Float'
-* on_3b
-    * Type: 'String'
-* on_2b
-    * Type: 'String'
-* on_1b
-    * Type: 'Integer'
-* outs_when_up
-    * Type: 'String'
-* inning
-    * Type: 'String'
-* inning_topbot
-    * Type: 'String'
-* hc_x
-    * Type: 'Float'
-* hc_y
-    * Type: 'Float'
-* vx0
-    * Type: 'Float'
-* vy0
-    * Type: 'Float'
-* vz0
-    * Type: 'Float'
-* ax
-    * Type: 'Float'
-* ay
-    * Type: 'Float'
-* az
-    * Type: 'Float'
-* sz_top
-    * Type: 'Float'
-* sz_bot
-    * Type: 'Float'
-* hit_distance_sc
-    * Type: 'Float'
-* launch_speed
-    * Type: 'Integer'
-* launch_angle
-    * Type: 'Float'
-* effective_speed
-    * Type: 'Integer'
-* release_spin_rate
-    * Type: 'Integer'
-* spin_axis
-    * Type: 'Integer'
-* release_extension
-    * Type: 'String'
-* game_pk
-    * Type: 'Float'
-* fielder_2
-    * Type: 'String'
-* fielder_3
-    * Type: 'String'
-* fielder_4
-    * Type: 'String'
-* fielder_5
-    * Type: 'String'
-* fielder_6
-    * Type: 'String'
-* fielder_7
-    * Type: 'String'
-* fielder_8
-    * Type: 'String'
-* fielder_9
-    * Type: 'String'
-* estimated_ba_using
-    * Type: 'Float_speedangle'
-* estimated_woba_usi
-    * Type: 'Floatng_speedangle'
-* woba_value
-    * Type: 'Integer'
-* woba_denom
-    * Type: 'Float'
-* babip_value
-    * Type: 'Integer'
-* iso_value
-    * Type: 'Integer'
-* launch_speed_angle
-    * Type: 'Integer'
-* at_bat_number
-    * Type: 'Integer'
-* pitch_number
-    * Type: 'String'
-* pitch_name
-    * Type: 'Integer'
-* home_score
-    * Type: 'Integer'
-* away_score
-    * Type: 'Integer'
-* bat_score
-    * Type: 'Integer'
-* fld_score
-    * Type: 'Integer'
-* post_away_score
-    * Type: 'Integer'
-* post_home_score
-    * Type: 'Integer'
-* post_bat_score
-    * Type: 'Integer'
-* post_fld_score
-    * Type: 'Integer'
-* if_fielding_alignm
-    * Type: 'Stringent'
-* of_fielding_alignm
-    * Type: 'Stringent'
-* delta_run_exp
-    * Type: 'Float'
-* delta_home_win_exp
-    * Type: 'Float'
+### Table Information
+| Column Name | Column Type | Other Information (If any) |
+|:-----------:|:-----------:|:--------------------------:|
+| id          | Integer     | Primary Key for statcast data |
+| game_date   | String      |                            |
+| pitch_type  | Date        |                            |
+| release_speed | Float     |                            |
+| release_pos_x | Float     |                            |
+| release_pos_y | Float     |                            |
+| release_pos_z | Float     |                            |
+| batter      | String      |                            |
+| pitcher     | String      |                            |
+| events      | String      |                            |
+| description | String      |                            |
+| zone        | Text        |                            |
+| des         | String      |                            |
+| game_type   | String      |                            |
+| stand       | String      |                            |
+| p_throws    | String      |                            |
+| home_team   | String      |                            |
+| away_team   | String      |                            |
+| type        | String      |                            | 
+| hit_location | String     |                            | 
+| bb_type     | String      |                            | 
+| balls       | Integer     |                            | 
+| strikes     | Integer     |                            | 
+| pfx_x       | Float       |                            | 
+| pfx_z       | Float       |                            | 
+| plate_x     | Float       |                            | 
+| plate_z     | Float       |                            | 
+| on_3b       | String      |                            | 
+| on_2b       | String      |                            | 
+| on_1b       | Integer     |                            | 
+| outs_when_up | String     |                            | 
+| inning      | String      |                            | 
+| inning_topbot | String    |                            | 
+| hc_x        | Float       |                            | 
+| hc_y        | Float       |                            | 
+| vx0         | Float       |                            | 
+| vy0         | Float       |                            | 
+| vz0         | Float       |                            | 
+| ax          | Float       |                            | 
+| ay          | Float       |                            | 
+| az          | Float       |                            | 
+| sz_top      | Float       |                            | 
+| sz_bot      | Float       |                            | 
+| hit_distance_sc | Float   |                            | 
+| launch_speed | Integer    |                            | 
+| launch_angle | Float      |                            | 
+| effective_speed | Integer |                            | 
+| release_spin_rate | Integer |                          | 
+| spin_axis   | Integer     |                            | 
+| release_extension | String |                           | 
+| game_pk     | Float       |                            | 
+| fielder_2   | String      |                            | 
+| fielder_3   | String      |                            | 
+| fielder_4   | String      |                            | 
+| fielder_5   | String      |                            | 
+| fielder_6   | String      |                            | 
+| fielder_7   | String      |                            | 
+| fielder_8   | String      |                            | 
+| fielder_9   | String      |                            | 
+| estimated_ba_using_speedangle | Float |                | 
+| estimated_woba_using_speedangle | Floatng |            | 
+| woba_value  | Integer     |                            | 
+| woba_denom  | Float       |                            | 
+| babip_value | Integer     |                            | 
+| iso_value   | Integer     |                            | 
+| launch_speed_angle | Integer |                         | 
+| at_bat_number | Integer   |                            | 
+| pitch_number | String     |                            | 
+| pitch_name  | Integer     |                            | 
+| home_score  | Integer     |                            | 
+| away_score  | Integer     |                            | 
+| bat_score  | Integer      |                            | 
+| fld_score  | Integer      |                            | 
+| post_away_score | Integer |                            | 
+| post_home_score | Integer |                            | 
+| post_bat_score | Integer  |                            | 
+| post_fld_score | Integer  |                            | 
+| if_fielding_alignm | String |                          | 
+| of_fielding_alignm | String |                          | 
+| delta_run_exp | Float     |                            | 
+| delta_home_win_exp | Float |                           |

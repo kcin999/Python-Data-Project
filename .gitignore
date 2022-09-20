@@ -132,3 +132,5 @@ dmypy.json
 *.csv
 temp.*
 database/baseball.db
+my_notes.txt
+docs/
