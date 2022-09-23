@@ -6,7 +6,7 @@ from dash import html
 import dash
 
 
-dash.register_page(__name__)
+dash.register_page(__name__, name="Not Found")
 
 
 def layout() -> html.Div:

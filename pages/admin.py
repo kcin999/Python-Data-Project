@@ -8,7 +8,7 @@ import dash
 from dash import html, dcc, Input, Output, State
 from database import data_functions
 
-dash.register_page(__name__, '/admin', title="Admin Page")
+dash.register_page(__name__, '/admin', title="Admin")
 
 
 def layout() -> html.Div:
