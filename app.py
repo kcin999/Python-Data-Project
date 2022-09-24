@@ -33,7 +33,8 @@ def create_app() -> Dash:
     :rtype: Dash
     """
     app = Dash(__name__, use_pages=True,
-               external_stylesheets=[dbc.themes.CYBORG])
+                  external_stylesheets=[dbc.themes.DARKLY]
+               )
     server = app.server
 
     server.config.from_object(config.Config)
