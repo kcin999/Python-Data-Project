@@ -8,6 +8,8 @@ import config
 navbar = dbc.NavbarSimple(
     children=[
         dbc.NavItem(dbc.NavLink("Home", href="/")),
+        dbc.NavItem(dbc.NavLink("Custom Visualizations",
+                    href="/custom_visualization")),
         dbc.NavItem(dbc.NavLink("About", href="/about")),
         dbc.DropdownMenu(
             children=[
@@ -32,8 +34,9 @@ def create_app() -> Dash:
     :return: Returns the Dash Application
     :rtype: Dash
     """
-    app = Dash(__name__, use_pages=True,
-                  external_stylesheets=[dbc.themes.DARKLY]
+    app = Dash(__name__,
+               use_pages=True,
+               external_stylesheets=[dbc.themes.DARKLY]
                )
     server = app.server
 

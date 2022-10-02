@@ -48,37 +48,34 @@ def about_the_project() -> dbc.Accordion:
     :return: Returns the HTML object to render
     :rtype: dbc.Accordion
     """
-    return dbc.Accordion(
-        dbc.AccordionItem(
-            [
-                dbc.Container([
-                    dbc.Row([
-                        html.P(
-                            "Welcome to the Nick's Data Project! "
-                        ),
-                        html.P(
-                            (
-                                "This is a project created and maintianed by Nick Bierman, "
-                                "experimenting with data visualization, website creation, "
-                                "design and user interactions, "
-                                "data handling and calculating and so much more!"
-                            )
-                        )
-                    ]),
-                    dbc.Row([
-                        dbc.Col([
-                            information_card(
-                                title="Project Link",
-                                link="https://github.com/kcin999/Python-Data-Project",
-                                image="static/images/GitHub.png"
-                            )
-                        ], width=4)
-                    ], justify="center")
-                ])
-            ],
-            title="About the Project"
-        ), start_collapsed=True
-    )
+    return dbc.Container([
+        dbc.Row([
+            html.H1("About the Project", style={"text-align": "center"}),
+            html.Hr()
+        ]),
+        dbc.Row([
+            html.P(
+                "Welcome to the Nick's Data Project! "
+            ),
+            html.P(
+                (
+                    "This is a project created and maintianed by Nick Bierman, "
+                    "experimenting with data visualization, website creation, "
+                    "design and user interactions, "
+                    "data handling and calculating and so much more!"
+                )
+            )
+        ]),
+        dbc.Row([
+            dbc.Col([
+                information_card(
+                    title="Project Link",
+                    link="https://github.com/kcin999/Python-Data-Project",
+                    image="static/images/GitHub.png"
+                )
+            ], width=4)
+        ], justify="center")
+    ])
 
 
 def about_the_author() -> dbc.Accordion:
@@ -87,75 +84,72 @@ def about_the_author() -> dbc.Accordion:
     :return: Returns the HTML object to render
     :rtype: dbc.Accordion
     """
-    return dbc.Accordion(
-        dbc.AccordionItem(
-            [
-                dbc.Container([
-                    dbc.Row([
-                        html.P(
-                            (
-                                "Nick Bierman is a current college Senior at Xavier Univeristy "
-                                "studying Computer Science with dual minors in "
-                                "Mathematics and Business Analytics. "
-                            )
-                        ),
-                        html.P(
-                            (
-                                "He has a strong interest and passion for data, "
-                                "including pulling insights, and making data accessible. "
-                            )
-                        ),
-                        html.P(
-                            (
-                                "In addition to data analysis, Nick enjoys pulling data from "
-                                "multiple sources and connecting them and combining them. "
-                            )
-                        ),
-                        html.P(
-                            (
-                                "Outside of his data project, school, and work, "
-                                "Nick enjoys listening to music"
-                                "such as: country, rock, pop, and anything in between. "
-                                "He also loves sports and especially baseball, "
-                                "thus showing the emphasis on baseball statistics"
-                            )
-                        )
-                    ]),
-                    dbc.Row([
-                        dbc.Col([
-                            information_card(
-                                title="LinkedIn",
-                                link="https://www.linkedin.com/in/nicholas-bierman/",
-                                image="static/images/LinkedIn.png"
-                            )
-                        ], width=4),
-                        dbc.Col([
-                            information_card(
-                                title="Gmail",
-                                link="mailto:nbierman2002@gmail.com",
-                                image="static/images/Gmail.png"
-                            )
-                        ], width=4),
-                        dbc.Col([
-                            information_card(
-                                title="GitHub",
-                                link="https://github.com/kcin999",
-                                image="static/images/GitHub.png"
-                            )
-                        ], width=4)
-                    ], justify="center")
-                ])
-            ],
-            title="About the Author"
-        ), start_collapsed=True
-    )
+    return dbc.Container([
+        dbc.Row([
+            html.H1("About the Author", style={"text-align": "center"}),
+            html.Hr()
+        ]),
+        dbc.Row([
+            html.P(
+                (
+                    "Nick Bierman is a current college Senior at Xavier Univeristy "
+                    "studying Computer Science with dual minors in "
+                    "Mathematics and Business Analytics. "
+                )
+            ),
+            html.P(
+                (
+                    "He has a strong interest and passion for data, "
+                    "including pulling insights, and making data accessible. "
+                )
+            ),
+            html.P(
+                (
+                    "In addition to data analysis, Nick enjoys pulling data from "
+                    "multiple sources and connecting them and combining them. "
+                )
+            ),
+            html.P(
+                (
+                    "Outside of his data project, school, and work, "
+                    "Nick enjoys listening to music"
+                    "such as: country, rock, pop, and anything in between. "
+                    "He also loves sports and especially baseball, "
+                    "thus showing the emphasis on baseball statistics"
+                )
+            )
+        ]),
+        dbc.Row([
+            dbc.Col([
+                information_card(
+                    title="LinkedIn",
+                    link="https://www.linkedin.com/in/nicholas-bierman/",
+                    image="static/images/LinkedIn.png"
+                )
+            ], width=4),
+            dbc.Col([
+                information_card(
+                    title="Gmail",
+                    link="mailto:nbierman2002@gmail.com",
+                    image="static/images/Gmail.png"
+                )
+            ], width=4),
+            dbc.Col([
+                information_card(
+                    title="GitHub",
+                    link="https://github.com/kcin999",
+                    image="static/images/GitHub.png"
+                )
+            ], width=4)
+        ], justify="center")
+    ])
 
 
 def layout() -> dbc.Container:
     """Returns the layout for the about page
 
     :return: The HTML.DIV for the about page
-    :rtype: html.Div
+    :rtype: dbc.Container
     """
     return dbc.Container([
         dbc.Row([

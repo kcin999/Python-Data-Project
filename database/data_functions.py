@@ -5,8 +5,9 @@ from datetime import datetime
 import pybaseball
 import requests
 import pandas as pd
+from sqlalchemy.inspection import inspect
 
-from database.database_models import Pitches, db
+from database.database_models import Pitches, Players, db
 from global_variables import PLAYER_INFO_URL
 
 
@@ -72,12 +73,12 @@ def add_statcast_data(start_date: datetime, end_date: datetime):
     :param end_date: End date of range to get data for
     :type end_date: datetime
     """
-    df = get_statcast_data(start_date, end_date)
+    df = download_statcast_data(start_date, end_date)
 
     df.to_sql(con=db.engine, name='pitches', if_exists='append', index=False)
 
 
-def get_statcast_data(start_date: datetime, end_date: datetime) -> pd.DataFrame:
+def download_statcast_data(start_date: datetime, end_date: datetime) -> pd.DataFrame:
     """Retrieves the Statcast Data between the two dates
 
     :param start_date: Start date of range to get data for
@@ -196,3 +197,22 @@ def clear_statcast_data(start_date: datetime = None, end_date: datetime = None):
         query = query.filter(Pitches.game_date <= end_date)
 
     query.delete()
+
+
+def get_columns(model: str) -> list[str]:
+    """Retuns a list of the columns in a table
+
+    :param model: WHich table / model to get the attributes for
+    :type model: str
+
+    :return: List of the column names
+    :rtype: list[str]
+    """
+    if model == 'Pitches':
+        return [column.name for column in inspect(Pitches).c]
+    elif model == 'Players':
+        return [column.name for column in inspect(Players).c]
+
+
+def get_statcast_data():
+    return pd.read_sql(Pitches.query.statement, con=db.engine)
