@@ -1,13 +1,17 @@
 """Houses all Database Models / Tables for the database
 """
+from datetime import datetime
+import sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+
 
 class Pitches(db.Model):
     """This is a database model class which houses all pitches and their results
     """
     __tablename__ = "pitches"
+    __bind_key__ = 'baseball'
 
     id = db.Column(db.Integer, primary_key=True)
     pitch_type = db.Column(db.String(2))
@@ -96,6 +100,7 @@ class Players(db.Model):
     """This is the database model class which houses all player information and their various keys
     """
     __tablename__ = 'players'
+    __bind_key__ = 'baseball'
 
     id = db.Column(db.Integer, primary_key=True)
     key_retro = db.Column(db.String(10))
@@ -111,3 +116,56 @@ class Players(db.Model):
     name_nick = db.Column(db.String(55))
     birth_date = db.Column(db.Date)
     death_date = db.Column(db.Date)
+
+
+class Stocks(db.Model):
+    """This is the database model class which houses overall stock information
+    """
+    __tablename__ = 'stocks'
+    __bind_key__ = 'robinhood'
+
+    stock_ticker = db.Column(db.String(5), primary_key=True)
+    company_name = db.Column(db.String(50), nullable=False)
+
+    owned_stock = db.relationship('OwnedStock', backref='stocks', lazy=True)
+
+    created_datetime = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+        server_default=sqlalchemy.sql.func.now()
+    )
+    updated_datetime = db.Column(
+        db.DateTime, nullable=False,
+        onupdate=datetime.utcnow(),
+        server_onupdate=sqlalchemy.sql.func.now()
+    )
+
+
+class OwnedStock(db.Model):
+    """This is the database model class which houses equity informaiton for stocks
+    """
+    __tablename__ = 'ownedstock'
+    __bind_key__ = 'robinhood'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    ticker = db.Column(
+        db.String(5),
+        db.ForeignKey('stocks.stock_ticker'),
+        nullable=False
+    )
+    created_datetime = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+        server_default=sqlalchemy.sql.func.now()
+    )
+    price = db.Column(db.Numeric(8, 4))
+    quantity = db.Column(db.Numeric(16, 8))
+    average_buy_price = db.Column(db.Numeric(8, 4))
+    equity = db.Column(db.Numeric(8, 4))
+    percent_change = db.Column(db.Numeric(5, 2))
+    intraday_percent_change = db.Column(db.Numeric(5, 2))
+    equity_change = db.Column(db.Numeric(8, 4))
+    pe_ratio = db.Column(db.Numeric(12, 8))
+    percentage = db.Column(db.Numeric(5, 2))

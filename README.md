@@ -1,4 +1,4 @@
-# Baseball
+# Python Data Project
 This is a repository for learning baseball data and learning dash and how to visualize it all together
 
 Great site explaining what some of the columns mean: https://baseballsavant.mlb.com/csv-docs
@@ -20,10 +20,15 @@ Great site explaining what some of the columns mean: https://baseballsavant.mlb.
 
 ## Set Up
 1. Make sure that Python is installed on your system. This code works and has been tested on Python 3.10, but it may work on older versions, though it is untested. 
-2. Run `git clone https://github.com/kcin999/Baseball.git` in terminal
+2. Run `git clone https://github.com/kcin999/Python-Data-Project.git` in terminal
     * Note: This assumes that git is installed on your system as well.
 3. Run `pip install -r requirements.txt` in the terminal where the placed
     * Note: This assumes that pip is also installed with python on your system
+4. If you wish to use the Robinhood Database system, then set the following enviroment variables on your system:
+    * ROBINHOOD_USERNAME
+    * ROBINHOOD_PASSWORD
+    * ROBINHOOD_ONETIME_PASSWORD
+        * Only set if you are using MFA
 
 ## How to run
 Run the following command with the root of the project:

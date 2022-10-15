@@ -1,7 +1,11 @@
 pybaseball==2.2.1
 dash==2.6.1
-Flask-SQLAlchemy==2.5.1
+Flask-SQLAlchemy==3.0.0
 pylint_flask_sqlalchemy==0.2.0
 pylint_flask==0.6
 sphinx==5.1.1
 sphinx-rtd-theme==1.0.0
+SQLAlchemy==1.4.41
+robin_stocks==2.1.0
+pyotp==2.7.0
+dash_bootstrap_components==1.2.1

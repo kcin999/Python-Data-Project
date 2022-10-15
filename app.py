@@ -10,6 +10,7 @@ navbar = dbc.NavbarSimple(
         dbc.NavItem(dbc.NavLink("Home", href="/")),
         dbc.NavItem(dbc.NavLink("Custom Visualizations",
                     href="/custom_visualization")),
+        dbc.NavItem(dbc.NavLink("Robinhood", href="realtime-robinhood")),
         dbc.NavItem(dbc.NavLink("About", href="/about")),
         dbc.DropdownMenu(
             children=[
@@ -43,8 +44,9 @@ def create_app() -> Dash:
     server.config.from_object(config.Config)
 
     from database.database_models import db
-    db.init_app(server)
-    db.create_all(app=server)
+    db.init_app(app=server)
+    with server.app_context():
+        db.create_all()
 
     app.layout = html.Div(
         children=[

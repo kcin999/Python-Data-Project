@@ -6,7 +6,7 @@ as well as admin information regarding the application
 import datetime
 import dash
 from dash import html, dcc, Input, Output, State
-from database import data_functions
+from database import database_functions
 
 dash.register_page(__name__, '/admin', title="Admin")
 
@@ -38,7 +38,9 @@ def layout() -> html.Div:
 
         html.Button(id='delete_data', n_clicks=0, children='Delete'),
         html.Div(id='delete_data_output',
-                 children='Delete data in the database')
+                 children='Delete data in the database'),
+        html.Button(id='add_robinhood_data', children="Add Robinhood data"),
+        html.Div(id='add_robinhood_output')
     ])
 
 
@@ -67,7 +69,8 @@ def add_statcast_data(_n_clicks: int, start_date: str, end_date: str) -> str:
     """
     start_date_object = datetime.datetime.strptime(start_date, "%Y-%m-%d")
     end_date_object = datetime.datetime.strptime(end_date, "%Y-%m-%d")
-    data_functions.add_statcast_data(start_date_object, end_date_object)
+    statcast = database_functions.Statcast()
+    statcast.add_statcast_data_to_database(start_date_object, end_date_object)
 
     return f"Added data for the range {start_date} through {end_date}"
 
@@ -75,7 +78,7 @@ def add_statcast_data(_n_clicks: int, start_date: str, end_date: str) -> str:
 @dash.callback(
     Output('delete_data_output', 'children'),
     Input('delete_data', 'n_clicks'),
-    prevent_inital_call=True
+    prevent_initial_call=True
 )
 def delete_data(_n_clicks: int) -> str:
     """Deletes all data from the database
@@ -87,14 +90,15 @@ def delete_data(_n_clicks: int) -> str:
     :return: Message to show in the application
     :rtype: str
     """
-    data_functions.clear_statcast_data()
+    statcast = database_functions.Statcast()
+    statcast.delete_statcast_data_from_database()
     return "Data Cleared"
 
 
 @dash.callback(
     Output('add_players_output', 'children'),
     Input('add_players_submit', 'n_clicks'),
-    prevent_inital_call=True
+    prevent_initial_call=True
 )
 def add_player_data(_n_clicks: int) -> str:
     """Adds player data to the database
@@ -106,5 +110,18 @@ def add_player_data(_n_clicks: int) -> str:
     :return: Message to show in the application
     :rtype: str
     """
-    data_functions.add_player_info()
+    statcast = database_functions.Statcast()
+    statcast.add_player_info()
     return "All Player Info Added"
+
+@dash.callback(
+    Output('add_robinhood_output', 'children'),
+    Input('add_robinhood_data', 'n_clicks'),
+    prevent_initial_call=True
+)
+def add_robinhood_data(_n1: int) -> str:
+    robinhood = database_functions.Robinhood()
+
+    robinhood.add_owned_stock_to_database()
+
+    return "Hey, it worked"

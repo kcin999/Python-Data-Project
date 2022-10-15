@@ -1,5 +1,5 @@
 # Information about the database
-The default database type is SQLiteInitally, the database is located at [baseball.db](/database/baseball.db). This value is set in the [config.py](/config.py) in the 'SQLALCHEMY_DATABASE_URI' variable. 
+The default database type is SQLite. Initally, the databases are located at [baseball.db](/instance/baseball.db) and [robinhood.db](/instance/robinhood.db). This value is set in the [config.py](/config.py) in the 'SQLALCHEMY_DATABASE_URI' variable. 
 
 If you wish to use MySQL, change the value of 'SQLALCHEMY_DATABASE_URI' in the [config.py](/config.py) file to:
 ```
@@ -11,13 +11,18 @@ mysql://[username]:[password]@[host]:[port]/[database_name]
 Initially, this is a sqlite database and it is tested and working. This can be set to another database type, however there may need to be additional packages installed. Further, if there is a cloud database (either local or otherwise), then this must be live and connection ready before the app starts
 
 Table information are in the following sections
-* [Statcast](#statcast)
+* [baseball](#baseball)
+* [Robinhood] (#robinhood)
 
-## Statcast
+## Baseball
 ### General Info
+The baseball database is all of the baseball related data being leveraged within this program. Currently there are two tables, with their corresponding information below.
+* [Pitches](#table-information-pitches)
+* [Players](#table-information-players)
+
+### Table Information: pitches
 This is where all the pitch-by-pitch data is located. The columns are located below. Please see this site: https://baseballsavant.mlb.com/csv-docs for information on the specific columns. The names are the same, except for 'id'.
 
-### Table Information
 | Column Name | Column Type | Other Information (If any) |
 |:-----------:|:-----------:|:--------------------------:|
 | id          | Integer     | Primary Key for statcast data |
@@ -101,3 +106,59 @@ This is where all the pitch-by-pitch data is located. The columns are located be
 | of_fielding_alignm | String |                          | 
 | delta_run_exp | Float     |                            | 
 | delta_home_win_exp | Float |                           |
+
+### Table Information: players
+This is where all of the data is stored for players. Data is downloaded from here: https://raw.githubusercontent.com/chadwickbureau/register/master/data/people.csv. More info can be found here: https://github.com/chadwickbureau/register.
+
+| Column Name | Column Type | Column Description |
+|:-----------:|:-----------:|:------------------:|
+| id          | Integer     | Primary Key for the table |
+| key_retro   | String(10)  | Retrosheets Player ID |
+| key_bbref   | String(10)  | Baseball Reference Player ID |
+| key_fangraphs | String(10) | Fangraphs Player ID |
+| key_mlbam   | String(10)  | MLBAM / Statcast Player ID |
+| mlb_played_first | String(4) | Year of their first game |
+| mlb_played_last | String(4) | Year of their last game|
+| name_last   | String(20)  | Player's last name |
+| name_first  | String(20)  | Player's first name |
+| name_given  | String(60)  | Player's given name |
+| name_suffix | String(20)  | Player's suffix |
+| name_nick   | String(55)  | Nick name of the player, if any |
+| birth_date  | Date        | Player's birthday |
+| death_date  | Date        | Player's deathday |
+
+## Robinhood
+The robinhood data is used to keep track of stock information, such as stock prices over time, and things in one's portfolio.
+* [Stocks](#table-information-stocks)
+* [OwnedStock](#table-information-ownedstock)
+
+### Table Information: Stocks
+This table is the main key that keeps track of stock tickers and their associated companies.
+
+| Column Name | Column Type | Column Description |
+|:-----------:|:-----------:|:------------------:|
+| stock_ticker | String(5)  | Stock Ticker, primary_key |
+| company_name | String(50) | Company Name |
+| created_datetime | DateTime | Date the stock was added to the database |
+| updated_datetime |  DateTime | Last time the record was updated in the database |
+
+Relationships:
+* One to Many `stocks[stock_ticker]` to `ownedstock[ticker]`
+
+### Table Information: OwnedStock
+Overtime stock information tracking
+
+| Column Name | Column Type | Column Description |
+|:-----------:|:-----------:|:------------------:|
+| id | Integer | Primary Key Column; autoincrement |
+| ticker | String(5) | Stock Ticker; Foreign Key with `Stocks` |
+| created_datetime | DateTime | Datetime the record was created |
+| price | Numeric(8, 4) | Curremt Price per share|
+| quantity | Numeric(16, 8) | Current Quantity owned|
+| average_buy_price | Numeric(8, 4) | Average amount the quantity owned was purchased for |
+| equity | Numeric(8, 4) | How much amount in dollars is owned|
+| percent_change | Numeric(5, 2) | Percent Change since purchase |
+| intraday_percent_change | Numeric(5, 2) | Percent Change within current day |
+| equity_change | Numeric(8, 4) | How much equity has changed since purchase ($) |
+| pe_ratio | Numeric(12, 8) | Price-to-earnings ratio |
+| percentage | Numeric(5, 2) | Percentage of portfolio |
