@@ -35,7 +35,7 @@ Great site explaining what some of the columns mean: https://baseballsavant.mlb.
 ## How to run
 Run the following command with the root of the project:
 ```
-python app/app.py
+python app.py
 ```
 
 Navigate to http://127.0.0.1:8050/ in your browser to see the application
