@@ -1,7 +1,7 @@
 # Python Data Project
 This is a repository for learning baseball data and learning dash and how to visualize it all together. 
 
-This is not yet functional, and is a side project of mine;.
+This is not yet functional, and is a side project of mine.
 
 Great site explaining what some of the columns mean: https://baseballsavant.mlb.com/csv-docs
 
