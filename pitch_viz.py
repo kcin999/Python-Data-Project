@@ -1,13 +1,24 @@
+from functools import partial
 import numpy as np
 import matplotlib.pyplot as plt
 import statsapi
 from matplotlib.animation import FuncAnimation
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-
+import plotly.express as px
 import json
+import plotly.graph_objects as go
+
+import pandas as pd
+import plotly.offline as offline
+
 
 PITCH_LIMIT = 5
 TIME_STEP = 0.01
+PITCH_OFFSET = [
+    125,  # y
+    -200,  # x
+    0,  # z
+]
 
 color_map = {
     # "Fastball": "blue",
@@ -41,7 +52,13 @@ def get_pitch_data(output_data: bool = False):
         for event in play["playEvents"]:
             if "pitchData" in event:
                 coords = event["pitchData"]["coordinates"]
-                initial_position = np.array([coords["x0"], coords["y0"], coords["z0"]])
+                initial_position = np.array(
+                    [
+                        coords["x0"] + PITCH_OFFSET[0],
+                        coords["y0"] + PITCH_OFFSET[1],
+                        coords["z0"] + PITCH_OFFSET[2],
+                    ]
+                )
                 initial_velocity = np.array(
                     [coords["vX0"], coords["vY0"], coords["vZ0"]]
                 )
@@ -200,14 +217,73 @@ def update_plot(frame, ax, all_positions, pitches_data, rectangle):
     # for pitch_type, color in legend_entries.items():
     #     ax.plot([], [], color=color, label=pitch_type)
 
+
+def _transform_coordinate(
+    coord: pd.Series, center: float, scale: float, sign: float
+) -> pd.Series:
+    return sign * ((coord - center) * scale + center)
+
+
+def transform_coordinates(
+    coords: pd.DataFrame, scale: float, x_center: float = 125, y_center: float = 199
+) -> pd.DataFrame:
+    x_transform = partial(_transform_coordinate, center=x_center, scale=scale, sign=+1)
+    y_transform = partial(_transform_coordinate, center=y_center, scale=scale, sign=-1)
+    return coords.assign(x=coords.x.apply(x_transform), y=coords.y.apply(y_transform))
+
+
+def get_stadium_scatter(team: str = "generic"):
+    STADIUM_SCALE = 2.495 * 2 / 2.33
+    stadiums = transform_coordinates(
+        pd.read_csv("stadiums.csv", index_col=0), scale=STADIUM_SCALE
+    )
+
+    stadiums = stadiums.loc[stadiums["team"] == team]
+
+    traces = []
+    for segment in stadiums["segment"].unique():
+        traces.append(
+            go.Scatter3d(
+                x=stadiums.loc[stadiums["segment"] == segment, "x"],
+                y=stadiums.loc[stadiums["segment"] == segment, "y"],
+                z=[0] * len(stadiums.loc[stadiums["segment"] == segment, "x"]),
+                name=segment,
+                # marker=None
+                mode="lines",
+            )
+        )
+
+    return traces
+
+
+def generate_plotly_chart(all_positions):
+    fig = go.Figure()
+    for position in all_positions:
+        df = pd.DataFrame(position, columns=["x", "y", "z"])
+
+        fig.add_trace(go.Scatter3d(x=df["x"], y=df["y"], z=df["z"], mode="lines"))
+
+    fig.add_traces(get_stadium_scatter("cardinals"))
+
+    fig.update_layout(
+        scene=dict(
+            aspectmode="data",
+        ),
+    )
+
+    offline.plot(fig, filename="plotly_chart.html", auto_open=False)
+
+
 def main():
-    pitches_data = get_pitch_data()
+    pitches_data = get_pitch_data(True)
     all_positions, _all_velocities = simulation(pitches_data)
 
-    generate_chart(
-        all_positions,
-        pitches_data
-    )
+    # generate_chart(
+    #     all_positions,
+    #     pitches_data
+    # )
+
+    generate_plotly_chart(all_positions)
 
 
 if __name__ == "__main__":
